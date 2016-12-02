@@ -542,13 +542,6 @@ public class ApplicationInfo extends PackageItemInfo implements Parcelable {
     public int privateFlags;
 
     /**
-     * Boolean indicating whether the resolution of the SurfaceView associated
-     * with this appplication can be overriden.
-     * {@hide}
-     */
-    public int overrideRes = 0;
-
-    /**
      * The required smallest screen width the application can run on.  If 0,
      * nothing has been specified.  Comes from
      * {@link android.R.styleable#AndroidManifestSupportsScreens_requiresSmallestWidthDp
@@ -603,15 +596,6 @@ public class ApplicationInfo extends PackageItemInfo implements Parcelable {
      * {@link #splitSourceDirs} if an application is forward locked.
      */
     public String[] splitPublicSourceDirs;
-
-    /**
-     * Full paths to the locations of extra resource packages this application
-     * uses. This field is only used if there are extra resource packages,
-     * otherwise it is null.
-     * 
-     * {@hide}
-     */
-    public String[] resourceDirs;
 
     /**
      * String retrieved from the seinfo tag found in selinux policy. This value
@@ -813,9 +797,6 @@ public class ApplicationInfo extends PackageItemInfo implements Parcelable {
                 && !Arrays.equals(splitSourceDirs, splitPublicSourceDirs)) {
             pw.println(prefix + "splitPublicSourceDirs=" + Arrays.toString(splitPublicSourceDirs));
         }
-        if (resourceDirs != null) {
-            pw.println(prefix + "resourceDirs=" + Arrays.toString(resourceDirs));
-        }
         if ((flags&DUMP_FLAG_DETAILS) != 0 && seinfo != null) {
             pw.println(prefix + "seinfo=" + seinfo);
         }
@@ -904,7 +885,6 @@ public class ApplicationInfo extends PackageItemInfo implements Parcelable {
         theme = orig.theme;
         flags = orig.flags;
         privateFlags = orig.privateFlags;
-        overrideRes = orig.overrideRes;
         requiresSmallestWidthDp = orig.requiresSmallestWidthDp;
         compatibleWidthLimitDp = orig.compatibleWidthLimitDp;
         largestWidthLimitDp = orig.largestWidthLimitDp;
@@ -921,7 +901,6 @@ public class ApplicationInfo extends PackageItemInfo implements Parcelable {
         nativeLibraryRootRequiresIsa = orig.nativeLibraryRootRequiresIsa;
         primaryCpuAbi = orig.primaryCpuAbi;
         secondaryCpuAbi = orig.secondaryCpuAbi;
-        resourceDirs = orig.resourceDirs;
         seinfo = orig.seinfo;
         sharedLibraryFiles = orig.sharedLibraryFiles;
         dataDir = orig.dataDir;
@@ -961,7 +940,6 @@ public class ApplicationInfo extends PackageItemInfo implements Parcelable {
         dest.writeInt(theme);
         dest.writeInt(flags);
         dest.writeInt(privateFlags);
-        dest.writeInt(overrideRes);
         dest.writeInt(requiresSmallestWidthDp);
         dest.writeInt(compatibleWidthLimitDp);
         dest.writeInt(largestWidthLimitDp);
@@ -978,7 +956,6 @@ public class ApplicationInfo extends PackageItemInfo implements Parcelable {
         dest.writeInt(nativeLibraryRootRequiresIsa ? 1 : 0);
         dest.writeString(primaryCpuAbi);
         dest.writeString(secondaryCpuAbi);
-        dest.writeStringArray(resourceDirs);
         dest.writeString(seinfo);
         dest.writeStringArray(sharedLibraryFiles);
         dest.writeString(dataDir);
@@ -1018,7 +995,6 @@ public class ApplicationInfo extends PackageItemInfo implements Parcelable {
         theme = source.readInt();
         flags = source.readInt();
         privateFlags = source.readInt();
-        overrideRes = source.readInt();
         requiresSmallestWidthDp = source.readInt();
         compatibleWidthLimitDp = source.readInt();
         largestWidthLimitDp = source.readInt();
@@ -1035,7 +1011,6 @@ public class ApplicationInfo extends PackageItemInfo implements Parcelable {
         nativeLibraryRootRequiresIsa = source.readInt() != 0;
         primaryCpuAbi = source.readString();
         secondaryCpuAbi = source.readString();
-        resourceDirs = source.readStringArray();
         seinfo = source.readString();
         sharedLibraryFiles = source.readStringArray();
         dataDir = source.readString();
@@ -1224,7 +1199,6 @@ public class ApplicationInfo extends PackageItemInfo implements Parcelable {
     /** {@hide} */ public void setResourcePath(String resourcePath) { scanPublicSourceDir = resourcePath; }
     /** {@hide} */ public void setBaseResourcePath(String baseResourcePath) { publicSourceDir = baseResourcePath; }
     /** {@hide} */ public void setSplitResourcePaths(String[] splitResourcePaths) { splitPublicSourceDirs = splitResourcePaths; }
-    /** {@hide} */ public void setOverrideRes(int overrideResolution) { overrideRes = overrideResolution; }
 
     /** {@hide} */ public String getCodePath() { return scanSourceDir; }
     /** {@hide} */ public String getBaseCodePath() { return sourceDir; }
@@ -1232,5 +1206,4 @@ public class ApplicationInfo extends PackageItemInfo implements Parcelable {
     /** {@hide} */ public String getResourcePath() { return scanPublicSourceDir; }
     /** {@hide} */ public String getBaseResourcePath() { return publicSourceDir; }
     /** {@hide} */ public String[] getSplitResourcePaths() { return splitSourceDirs; }
-    /** {@hide} */ public int canOverrideRes() { return overrideRes; }
 }
