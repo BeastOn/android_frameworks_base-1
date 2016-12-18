@@ -19,6 +19,7 @@ package com.android.systemui.statusbar.phone;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.Configuration;
@@ -27,6 +28,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.InputDevice;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewTreeObserver;
 import android.view.animation.Interpolator;
@@ -41,7 +43,6 @@ import com.android.systemui.doze.DozeLog;
 import com.android.systemui.statusbar.FlingAnimationUtils;
 import com.android.systemui.statusbar.StatusBarState;
 import com.android.systemui.statusbar.policy.HeadsUpManager;
-import android.util.BoostFramework;
 
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
@@ -89,11 +90,19 @@ public abstract class PanelView extends FrameLayout {
     private FlingAnimationUtils mFlingAnimationUtils;
     private FalsingManager mFalsingManager;
 
-    /**
-     * For PanelView fling perflock call
-     */
-    private BoostFramework mPerf = null;
-    private int mBoostParamVal[];
+    private boolean mUpdateExpandOnLayout;
+    private View.OnLayoutChangeListener mLayoutChangeListener = new OnLayoutChangeListener() {
+        @Override
+        public void onLayoutChange(View v, int left, int top, int right, int bottom,
+                int oldLeft, int oldTop, int oldRight, int oldBottom) {
+            // update expand height
+            if (mHeightAnimator != null && mExpanding && mUpdateExpandOnLayout) {
+                final int maxPanelHeight = getMaxPanelHeight();
+                final PropertyValuesHolder[] values = mHeightAnimator.getValues();
+                values[0].setFloatValues(maxPanelHeight);
+            }
+        }
+    };
 
     /**
      * Whether an instant expand request is currently pending and we are just waiting for layout.
@@ -194,14 +203,6 @@ public abstract class PanelView extends FrameLayout {
         mFlingAnimationUtils = new FlingAnimationUtils(context, 0.6f);
         mBounceInterpolator = new BounceInterpolator();
         mFalsingManager = FalsingManager.getInstance(context);
-
-        boolean lIsPerfBoostEnabled = context.getResources().getBoolean(
-                com.android.internal.R.bool.config_enableCpuBoostForPanelViewFling);
-        if (lIsPerfBoostEnabled) {
-            mBoostParamVal = context.getResources().getIntArray(
-                    com.android.internal.R.array.panelview_flingboost_param_value);
-            mPerf = new BoostFramework();
-        }
     }
 
     protected void loadDimens() {
@@ -646,7 +647,7 @@ public abstract class PanelView extends FrameLayout {
         flingToHeight(vel, expand, target, collapseSpeedUpFactor, expandBecauseOfFalsing);
     }
 
-    protected void flingToHeight(float vel, boolean expand, float target,
+    protected void flingToHeight(float vel, final boolean expand, float target,
             float collapseSpeedUpFactor, boolean expandBecauseOfFalsing) {
         // Hack to make the expand transition look nice when clear all button is visible - we make
         // the animation only to the last notification, and then jump to the maximum panel height so
@@ -667,6 +668,7 @@ public abstract class PanelView extends FrameLayout {
             if (expandBecauseOfFalsing) {
                 vel = 0;
             }
+            mUpdateExpandOnLayout = isFullyCollapsed();
             mFlingAnimationUtils.apply(animator, mExpandedHeight, target, vel, getHeight());
             if (expandBecauseOfFalsing) {
                 animator.setDuration(350);
@@ -682,25 +684,22 @@ public abstract class PanelView extends FrameLayout {
                                 / collapseSpeedUpFactor));
             }
         }
-        if (mPerf != null) {
-            mPerf.perfLockAcquire(0, mBoostParamVal);
-        }
         animator.addListener(new AnimatorListenerAdapter() {
             private boolean mCancelled;
 
             @Override
+            public void onAnimationStart(Animator animation) {
+                if (expand) PanelView.this.addOnLayoutChangeListener(mLayoutChangeListener);
+            }
+
+            @Override
             public void onAnimationCancel(Animator animation) {
-                if (mPerf != null) {
-                    mPerf.perfLockRelease();
-                }
                 mCancelled = true;
             }
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                if (mPerf != null) {
-                    mPerf.perfLockRelease();
-                }
+                if (expand) PanelView.this.removeOnLayoutChangeListener(mLayoutChangeListener);
                 if (clearAllExpandHack && !mCancelled) {
                     setExpandedHeightInternal(getMaxPanelHeight());
                 }

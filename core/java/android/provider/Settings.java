@@ -2759,6 +2759,28 @@ public final class Settings {
         public static final int SCREEN_BRIGHTNESS_MODE_AUTOMATIC = 1;
 
         /**
+         * The keyboard brightness to be used while the screen is on.
+         * Valid value range is between 0 and {@link PowerManager#getMaximumKeyboardBrightness()}
+         * @hide
+         */
+        public static final String KEYBOARD_BRIGHTNESS = "keyboard_brightness";
+
+        /**
+         * The button brightness to be used while the screen is on or after a button press,
+         * depending on the value of {@link BUTTON_BACKLIGHT_TIMEOUT}.
+         * Valid value range is between 0 and {@link PowerManager#getMaximumButtonBrightness()}
+         * @hide
+         */
+        public static final String BUTTON_BRIGHTNESS = "button_brightness";
+
+        /**
+         * The time in ms to keep the button backlight on after pressing a button.
+         * A value of 0 will keep the buttons on for as long as the screen is on.
+         * @hide
+         */
+        public static final String BUTTON_BACKLIGHT_TIMEOUT = "button_backlight_timeout";
+
+        /**
          * Control whether the process CPU usage meter should be shown.
          *
          * @deprecated Use {@link Global#SHOW_PROCESSES} instead
@@ -3118,6 +3140,13 @@ public final class Settings {
         /** @hide */
         public static final Validator TIME_12_24_VALIDATOR =
                 new DiscreteValueValidator(new String[] {"12", "24"});
+
+        /**
+        * Developer options - Navigation Bar show switch
+        * @hide
+        */
+        public static final String DEV_FORCE_SHOW_NAVBAR = "dev_force_show_navbar";
+
 
         /**
          * Date format string
@@ -3552,6 +3581,229 @@ public final class Settings {
          */
 
         /**
+         * The OpenCNAM paid account ID
+         * @hide
+         */
+        public static final String DIALER_OPENCNAM_ACCOUNT_SID = "dialer_opencnam_account_sid";
+
+        /**
+         * The OpenCNAM authentication token
+         * @hide
+         */
+        public static final String DIALER_OPENCNAM_AUTH_TOKEN = "dialer_opencnam_auth_token";
+
+        /**
+         * Enable looking up of phone numbers of nearby places
+         * @hide
+         */
+        public static final String ENABLE_FORWARD_LOOKUP = "enable_forward_lookup";
+
+        /**
+         * Enable looking up of phone numbers of people
+         * @hide
+         */
+        public static final String ENABLE_PEOPLE_LOOKUP = "enable_people_lookup";
+
+        /**
+         * Enable looking up of information of phone numbers not in the contacts
+         * @hide
+         */
+        public static final String ENABLE_REVERSE_LOOKUP = "enable_reverse_lookup";
+
+        /**
+         * The forward lookup provider
+         * @hide
+         */
+        public static final String FORWARD_LOOKUP_PROVIDER = "forward_lookup_provider";
+
+        /**
+         * The people lookup provider
+         * @hide
+         */
+        public static final String PEOPLE_LOOKUP_PROVIDER = "people_lookup_provider";
+
+        /**
+         * The reverse lookup provider
+         * @hide
+         */
+        public static final String REVERSE_LOOKUP_PROVIDER = "reverse_lookup_provider";
+
+        /**
+         * Controls whether gestures are enabled.
+         * @hide
+         */
+        public static final String GESTURES_ENABLED = "gestures_enabled";
+
+        /**
+         * Controls whether double tap to wake is enabled.
+         * @hide
+         */
+        public static final String GESTURE_DOUBLE_TAP = "gesture_double_tap";
+
+        /**
+         * Controls whether draw C gesture is enabled.
+         * @hide
+         */
+        public static final String GESTURE_DRAW_C = "gesture_draw_c";
+
+        /**
+         * Controls whether draw E gesture is enabled.
+         * @hide
+         */
+        public static final String GESTURE_DRAW_E = "gesture_draw_e";
+
+        /**
+         * Controls whether draw V gesture is enabled.
+         * @hide
+         */
+        public static final String GESTURE_DRAW_V = "gesture_draw_v";
+
+        /**
+         * Controls whether draw inverse V gesture is enabled.
+         * @hide
+         */
+        public static final String GESTURE_DRAW_INVERSE_V = "gesture_draw_inverse_v";
+
+        /**
+         * Controls whether draw O gesture is enabled.
+         * @hide
+         */
+        public static final String GESTURE_DRAW_O = "gesture_draw_o";
+
+        /**
+         * Controls whether draw M gesture is enabled.
+         * @hide
+         */
+        public static final String GESTURE_DRAW_M = "gesture_draw_m";
+
+        /**
+         * Controls whether draw W gesture is enabled.
+         * @hide
+         */
+        public static final String GESTURE_DRAW_W = "gesture_draw_w";
+
+        /**
+         * Controls whether draw arrow left gesture is enabled.
+         * @hide
+         */
+        public static final String GESTURE_DRAW_ARROW_LEFT = "gesture_draw_arrow_left";
+
+        /**
+         * Controls whether draw arrow right gesture is enabled.
+         * @hide
+         */
+        public static final String GESTURE_DRAW_ARROW_RIGHT = "gesture_draw_arrow_right";
+
+        /**
+         * Controls whether one finger swipe up gesture is enabled.
+         * @hide
+         */
+        public static final String GESTURE_ONE_FINGER_SWIPE_UP = "gesture_one_finger_swipe_up";
+
+        /**
+         * Controls whether one finger swipe right gesture is enabled.
+         * @hide
+         */
+        public static final String GESTURE_ONE_FINGER_SWIPE_RIGHT = "gesture_one_finger_swipe_right";
+
+        /**
+         * Controls whether one finger swipe down gesture is enabled.
+         * @hide
+         */
+        public static final String GESTURE_ONE_FINGER_SWIPE_DOWN = "gesture_one_finger_swipe_down";
+
+        /**
+         * Controls whether one finger swipe left gesture is enabled.
+         * @hide
+         */
+        public static final String GESTURE_ONE_FINGER_SWIPE_LEFT = "gesture_one_finger_swipe_left";
+
+        /**
+         * Controls whether two finger swipe gesture is enabled.
+         * @hide
+         */
+        public static final String GESTURE_TWO_FINGER_SWIPE = "gesture_two_finger_swipe";
+
+        /**
+         *  Enable statusbar double tap gesture on to put device to sleep
+         * @hide
+         */
+        public static final String DOUBLE_TAP_SLEEP_GESTURE = "double_tap_sleep_gesture";
+
+        /**
+         * Enable/Disable screenshot sound
+         * @hide
+         */
+        public static final String SCREENSHOT_SOUND = "screenshot_sound";
+
+        /**
+         * Action to perform when the home key is long-pressed.
+         * (Default can be configured via config_longPressOnHomeBehavior)
+         * 0 - Nothing
+         * 1 - Menu
+         * 2 - App-switch
+         * 3 - Search
+         * 4 - Voice search
+         * 5 - In-app search
+         * 6 - Launch Camera
+         * 7 - Last app
+         * @hide
+         */
+        public static final String KEY_HOME_LONG_PRESS_ACTION = "key_home_long_press_action";
+
+        /**
+         * Action to perform when the home key is double-tapped.
+         * (Default can be configured via config_doubleTapOnHomeBehavior)
+         * (See KEY_HOME_LONG_PRESS_ACTION for valid values)
+         * @hide
+         */
+        public static final String KEY_HOME_DOUBLE_TAP_ACTION = "key_home_double_tap_action";
+
+        /**
+         * Action to perform when the menu key is pressed. (Default is 1)
+         * (See KEY_HOME_LONG_PRESS_ACTION for valid values)
+         * @hide
+         */
+        public static final String KEY_MENU_ACTION = "key_menu_action";
+
+        /**
+         * Action to perform when the menu key is long-pressed.
+         * (Default is 0 on devices with a search key, 3 on devices without)
+         * (See KEY_HOME_LONG_PRESS_ACTION for valid values)
+         * @hide
+         */
+        public static final String KEY_MENU_LONG_PRESS_ACTION = "key_menu_long_press_action";
+
+        /**
+         * Action to perform when the assistant (search) key is pressed. (Default is 3)
+         * (See KEY_HOME_LONG_PRESS_ACTION for valid values)
+         * @hide
+         */
+        public static final String KEY_ASSIST_ACTION = "key_assist_action";
+
+        /**
+         * Action to perform when the assistant (search) key is long-pressed. (Default is 4)
+         * (See KEY_HOME_LONG_PRESS_ACTION for valid values)
+         * @hide
+         */
+        public static final String KEY_ASSIST_LONG_PRESS_ACTION = "key_assist_long_press_action";
+
+        /**
+         * Action to perform when the app switch key is pressed. (Default is 2)
+         * (See KEY_HOME_LONG_PRESS_ACTION for valid values)
+         * @hide
+         */
+        public static final String KEY_APP_SWITCH_ACTION = "key_app_switch_action";
+
+        /**
+         * Action to perform when the app switch key is long-pressed. (Default is 0)
+         * (See KEY_HOME_LONG_PRESS_ACTION for valid values)
+         * @hide
+         */
+        public static final String KEY_APP_SWITCH_LONG_PRESS_ACTION = "key_app_switch_long_press_action";
+
+        /**
+
          * Settings to backup. This is here so that it's in the same place as the settings
          * keys and easy to update.
          *
@@ -3605,7 +3857,23 @@ public final class Settings {
             RINGTONE,
             LOCK_TO_APP_ENABLED,
             NOTIFICATION_SOUND,
-            ACCELEROMETER_ROTATION
+            ACCELEROMETER_ROTATION,
+            GESTURES_ENABLED,
+            GESTURE_DOUBLE_TAP,
+            GESTURE_DRAW_C,
+            GESTURE_DRAW_E,
+            GESTURE_DRAW_V,
+            GESTURE_DRAW_INVERSE_V,
+            GESTURE_DRAW_O,
+            GESTURE_DRAW_M,
+            GESTURE_DRAW_W,
+            GESTURE_DRAW_ARROW_LEFT,
+            GESTURE_DRAW_ARROW_RIGHT,
+            GESTURE_ONE_FINGER_SWIPE_UP,
+            GESTURE_ONE_FINGER_SWIPE_RIGHT,
+            GESTURE_ONE_FINGER_SWIPE_DOWN,
+            GESTURE_ONE_FINGER_SWIPE_LEFT,
+            GESTURE_TWO_FINGER_SWIPE
         };
 
         /**
@@ -6126,12 +6394,6 @@ public final class Settings {
         public static final String SLEEP_TIMEOUT = "sleep_timeout";
 
         /**
-         * Controls whether double tap to wake is enabled.
-         * @hide
-         */
-        public static final String DOUBLE_TAP_TO_WAKE = "double_tap_to_wake";
-
-        /**
          * The current assistant component. It could be a voice interaction service,
          * or an activity that handles ACTION_ASSIST, or empty which means using the default
          * handling.
@@ -6308,7 +6570,6 @@ public final class Settings {
             MOUNT_UMS_PROMPT,
             MOUNT_UMS_NOTIFY_ENABLED,
             SLEEP_TIMEOUT,
-            DOUBLE_TAP_TO_WAKE,
             WAKE_GESTURE_ENABLED,
             LONG_PRESS_TIMEOUT,
             CAMERA_GESTURE_DISABLED,
